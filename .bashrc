@@ -78,11 +78,12 @@ PROMPT_COMMAND=set_prompt
 # ===============================
 # Optional: Command syntax highlighting
 # ===============================
-# Clone this once:
-#   git clone https://github.com/jackharrisonsherlock/common.git ~/.bash-syntax-highlighting
+# git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git
+# make -C ble.sh install PREFIX=~/.local
+# echo 'source -- ~/.local/share/blesh/ble.sh' >> ~/.bashrc
 # Then enable:
-if [ -f ~/.bash-syntax-highlighting/syntax-highlighting.sh ]; then
-  source ~/.bash-syntax-highlighting/syntax-highlighting.sh
+if [ -f ~/.local/share/blesh/ble.sh ]; then
+  source ~/.local/share/blesh/ble.sh
 fi
 
 # ===============================
