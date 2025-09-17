@@ -43,9 +43,19 @@ init_terminal() {
     cat <<'EOF' >> "$HOME/.zshrc"
 
 # 🚀 Futuristic startup sequence
-if [ -x "$(command -v cmatrix)" ]; then
-    timeout 2 cmatrix -C red -b -u 5
-    clear
+if command -v cmatrix &> /dev/null; then
+    # Pick a random color from the list
+    COLORS=("green" "red" "blue" "white" "yellow" "cyan" "magenta" "black")
+    RAND_COLOR=${COLORS[$RANDOM % ${#COLORS[@]}]}
+
+    if command -v timeout &> /dev/null; then
+        timeout 2 cmatrix -C "$RAND_COLOR" -b -u 5
+    elif command -v gtimeout &> /dev/null; then
+        gtimeout 2 cmatrix -C "$RAND_COLOR" -b -u 5
+    fi
+
+    # Clean screen after animation
+    reset
 fi
 
 if [ -x "$(command -v neofetch)" ]; then
@@ -59,6 +69,12 @@ eval "$(starship init zsh)"
 source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+
+# Add History file
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
 EOF
 
     # Create custom Starship config
@@ -70,12 +86,12 @@ EOF
 add_newline = true
 
 format = """
-[░▒▓](cyan) $username@$hostname [▓▒░](purple) 
+[░▒▓](cyan) us3r@$hostname [▓▒░](purple) 
 [┌─](bold cyan)$directory$git_branch$git_status
 [└─>](bold purple) """
 
 [username]
-style_user = "bold green"
+style_user = "bold red"
 style_root = "bold red"
 format = "[$user]($style)"
 disabled = false
